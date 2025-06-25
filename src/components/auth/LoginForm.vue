@@ -1,62 +1,31 @@
 <template>
-  <q-form @submit.prevent="onLogin" class="q-gutter-md" ref="loginForm">
-    <q-input
-      v-model="email"
-      label="Email"
-      type="email"
-      filled
-      lazy-rules
-      :rules="[
-        (val) => !!val || 'Email is required',
-        (val) => /.+@.+\..+/.test(val) || 'Enter a valid email',
-      ]"
-    />
-
-    <q-input
-      v-model="password"
-      label="Password"
-      type="password"
-      filled
-      lazy-rules
-      :rules="[(val) => !!val || 'Password is required']"
-    />
-
-    <q-btn
-      type="submit"
-      label="Login"
-      color="primary"
-      class="q-mt-md full-width"
-      :loading="loading"
-      :disable="loading"
-    />
+  <q-form
+    @submit.prevent="onLogin"
+    class="q-gutter-md q-pa-md"
+    style="max-width: 400px; margin: auto"
+  >
+    <q-input v-model="form.email" label="Email" type="email" filled />
+    <q-input v-model="form.password" label="Password" type="password" filled />
+    <q-btn type="submit" label="Login" color="primary" class="full-width" />
   </q-form>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useQuasar } from 'quasar'
+import { useAuthStore } from 'stores/auth'
 
-const email = ref('')
-const password = ref('')
-const loading = ref(false)
-const loginForm = ref(null)
+const $q = useQuasar()
+const auth = useAuthStore()
 
-const onLogin = () => {
-  loginForm.value.validate().then((valid) => {
-    if (valid) {
-      loading.value = true
+const form = ref({ email: '', password: '' })
 
-      // Emit login event to parent
-      setTimeout(() => {
-        loading.value = false(
-          // You can replace this setTimeout with real API logic
-          'login',
-          {
-            email: email.value,
-            password: password.value,
-          },
-        )
-      }, 1000)
-    }
-  })
+async function onLogin() {
+  try {
+    await auth.login(form.value)
+    $q.notify({ type: 'positive', message: 'Login successful' })
+  } catch {
+    $q.notify({ type: 'negative', message: 'Login failed. Please try again.' })
+  }
 }
 </script>
