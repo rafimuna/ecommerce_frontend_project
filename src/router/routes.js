@@ -5,6 +5,12 @@ const routes = [
     children: [
       // Public Pages
       { path: '', name: 'home', component: () => import('src/pages/HomePage.vue') },
+      {
+        path: 'orders',
+        name: 'order-history',
+        component: () => import('pages/OrderHistoryPage.vue'),
+      },
+
       { path: 'login', name: 'login', component: () => import('pages/LoginPage.vue') },
       { path: 'register', name: 'register', component: () => import('pages/RegisterPage.vue') },
       {
