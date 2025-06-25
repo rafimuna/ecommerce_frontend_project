@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <order-item v-for="order in orders" :key="order.id" :order="order" />
+    <order-item v-for="order in orders" :key="order.id" :item="order" />
   </q-page>
 </template>
 <script setup>

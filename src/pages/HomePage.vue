@@ -11,6 +11,6 @@ import { ref, onMounted } from 'vue'
 import ProductCard from 'components/common/ProductCard.vue'
 const products = ref([])
 onMounted(async () => {
-  // Fetch products
+  // TODO: Fetch from API
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <app-header />
+      <AppHeader />
     </q-header>
 
     <q-page-container>
@@ -9,7 +9,7 @@
     </q-page-container>
 
     <q-footer class="text-center bg-grey-2">
-      <app-footer />
+      <AppFooter />
     </q-footer>
   </q-layout>
 </template>
