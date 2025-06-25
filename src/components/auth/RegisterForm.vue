@@ -42,28 +42,36 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from 'stores/auth'
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
+const auth = useAuthStore()
 
 const form = ref({
   username: '',
   email: '',
   password: '',
 })
-
 const loading = ref(false)
 const registerForm = ref(null)
 
-const emit = defineEmits(['register'])
-
 function onRegister() {
-  registerForm.value.validate().then((valid) => {
+  registerForm.value.validate().then(async (valid) => {
     if (valid) {
       loading.value = true
+      const res = await auth.register(form.value)
 
-      // Simulate API call
-      setTimeout(() => {
-        emit('register', { ...form.value })
-        loading.value = false
-      }, 1000)
+      if (res.success) {
+        $q.notify({ type: 'positive', message: 'Registration successful!' })
+      } else {
+        $q.notify({
+          type: 'negative',
+          message: res.error?.non_field_errors || 'Registration failed',
+        })
+      }
+
+      loading.value = false
     }
   })
 }
