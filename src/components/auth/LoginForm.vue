@@ -14,18 +14,22 @@
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAuthStore } from 'stores/auth'
+import { useRouter } from 'vue-router' // ✅ import router
 
 const $q = useQuasar()
+const router = useRouter() // ✅ use router instance
 const auth = useAuthStore()
 
 const form = ref({ email: '', password: '' })
 
 async function onLogin() {
-  try {
-    await auth.login(form.value)
+  const res = await auth.login(form.value)
+
+  if (res.success) {
     $q.notify({ type: 'positive', message: 'Login successful' })
-  } catch {
-    $q.notify({ type: 'negative', message: 'Login failed. Please try again.' })
+    router.push('/admin') // ✅ redirect after success
+  } else {
+    $q.notify({ type: 'negative', message: res.error?.error || 'Login failed' })
   }
 }
 </script>

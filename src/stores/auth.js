@@ -32,14 +32,14 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // ✅ LOGIN API
-  async function login({ username, password }) {
+  async function login({ email, password }) {
     try {
-      const res = await api.post('auth/login/', { username, password })
+      const res = await api.post('auth/login/', { email, password })
 
       accessToken.value = res.data.access
       refreshToken.value = res.data.refresh
       isAuthenticated.value = true
-      user.value = { username }
+      user.value = { email }
 
       api.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
       return { success: true }
